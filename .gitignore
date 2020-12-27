@@ -2,3 +2,6 @@
 /.vscode
 /project
 /target
+.bloop/root-test.json
+.bloop/bloop.settings.json
+.bloop/root.json
