@@ -31,10 +31,15 @@ class Controller(var board: Board, var players: Vector[Player]) extends Observab
   }
 
   def checkInputCoordinates(rect_num: Int, pos_num: Int): Boolean = {
-    if(rect_num < 1 || rect_num > 3){ false }
-    else if(pos_num < 1 || pos_num > 8) { false }
-    else{ true }
+    if rect_num < 1 || rect_num > 3 then 
+      false
+    else if pos_num < 1 || pos_num > 8 then
+      false
+    else
+      true
+    end if  
   }
+  
   def checkBoardForNeighbours(color: Int): Boolean = {
     board.check_Board_For_Neighbours(color)
   }
