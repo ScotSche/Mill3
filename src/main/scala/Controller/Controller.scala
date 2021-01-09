@@ -4,7 +4,7 @@ import Model.{Board, Player, Stone}
 import Util.Observable
 import GameStatus._
 
-class Controller(var board: Board, var players: Vector[Player]) extends Observable{
+class Controller(var board: Board, var players: Vector[Player]) extends Observable:
   var newMill = false
   var gameStatus: GameStatus = IDLE
 
@@ -13,6 +13,7 @@ class Controller(var board: Board, var players: Vector[Player]) extends Observab
     notifyObservers
     notifyPlayerObserver
   }
+
   def moveStone(old_position: (Int, Int), new_position: (Int, Int), color: Int): Unit = {
     val oldBoard = board;
     board = board.update_board(old_position._1, old_position._2, 0)
@@ -39,7 +40,7 @@ class Controller(var board: Board, var players: Vector[Player]) extends Observab
       true
     end if  
   }
-  
+
   def checkBoardForNeighbours(color: Int): Boolean = {
     board.check_Board_For_Neighbours(color)
   }
@@ -72,4 +73,3 @@ class Controller(var board: Board, var players: Vector[Player]) extends Observab
       notifyObservers
       notifyPlayerObserver
   }
-}
