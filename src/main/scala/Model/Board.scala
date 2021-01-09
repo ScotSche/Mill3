@@ -6,30 +6,30 @@ case class Board(stones: BoardMatrix[Stone]) :
 
   def stone(rect_num: Int, pos_num: Int) = stones.stone(rect_num, pos_num)
 
-  def update_board(rectangle_num: Int, position_num:Int, color:Int) : Board ={
+  def update_board(rectangle_num: Int, position_num:Int, color:Int) : Board =
     copy(stones.replaceStone(rectangle_num, position_num, Stone(color)))
-  }
+  
 
-  def check_stone_Set(rectangle_num: Int, position_num:Int): Boolean ={
+  def check_stone_Set(rectangle_num: Int, position_num:Int): Boolean =
     stones.stone(rectangle_num, position_num).isSet
-  }
+  
 
-  def amount_of_played_stones(color: Int): Int = {
+  def amount_of_played_stones(color: Int): Int = 
     stones.amountOfPlayedStones(color)
-  }
+  
 
-  def setup_relevant_Stones(in: Stone, color: Int): String = {
+  def setup_relevant_Stones(in: Stone, color: Int): String = 
     if in.color == color then 
       {"1"}
     else 
       {"0"}
     end if
-  }
+  
 
   def vecToString(vec: Vector[String]): String = vec.mkString
 
 
-  def check_board_for_mill(oldBoard: Board, color: Int): Boolean = {
+  def check_board_for_mill(oldBoard: Board, color: Int): Boolean = 
     val millControlVector = Vector(
       Integer.parseInt("111000000000000000000000", 2),
       Integer.parseInt("001110000000000000000000", 2),
@@ -60,33 +60,33 @@ case class Board(stones: BoardMatrix[Stone]) :
     val newMillCheck = newMills.map(n => if oldMills.contains(n) then false else true)
 
     if newMillCheck.contains(true) then true else false
-  }
-  def check_Board_For_Neighbours(color: Int): Boolean = {
-    val stoneCoordinates = for{
-      (i, j) <- stones.vectors.zipWithIndex
-      (s, n) <- i.zipWithIndex
-      if s.color == color
-    } yield {
+  
+  def check_Board_For_Neighbours(color: Int): Boolean = 
+    val stoneCoordinates = for
+        (i, j) <- stones.vectors.zipWithIndex
+        (s, n) <- i.zipWithIndex
+        if s.color == color
+      yield 
         val coord = (j, n)
         coord
-    }
-    val stoneNeighbours = for{
-      i <- stoneCoordinates
-    } yield {
-      val neighbourList = Vector((i._1, if i._2 - 1 < 0 then 7 else i._2 - 1), (i._1, if i._2 + 1 > 7 then 0 else i._2 + 1))
-      var additionalNeighbourList: Vector[(Int, Int)] = Vector()
-      if (i._2 % 2 != 0) {
-        additionalNeighbourList = i._1 match
-          case 0 => Vector((i._1 + 1, i._2))
-          case 1 => Vector((i._1 + 1, i._2), (i._1 - 1, i._2))
-          case 2 => Vector((i._1 - 1, i._2))
-      }
-      val finalNeighbours = neighbourList ++: additionalNeighbourList
-      finalNeighbours
-    }
+    
+    val stoneNeighbours = for
+        i <- stoneCoordinates
+      do 
+        val neighbourList = Vector((i._1, if i._2 - 1 < 0 then 7 else i._2 - 1), (i._1, if i._2 + 1 > 7 then 0 else i._2 + 1))
+        var additionalNeighbourList: Vector[(Int, Int)] = Vector()
+        if (i._2 % 2 != 0) then
+          additionalNeighbourList = i._1 match
+            case 0 => Vector((i._1 + 1, i._2))
+            case 1 => Vector((i._1 + 1, i._2), (i._1 - 1, i._2))
+            case 2 => Vector((i._1 - 1, i._2))
+
+        val finalNeighbours = neighbourList ++: additionalNeighbourList
+        finalNeighbours
+    
     val validNeighboursOnBoard = stoneNeighbours.flatMap(i => i).filter(i => !stone(i._1, i._2).isSet)
     println(stoneCoordinates)
     println(stoneNeighbours)
     println(validNeighboursOnBoard)
     if !validNeighboursOnBoard.isEmpty then true else false
-  }
+  

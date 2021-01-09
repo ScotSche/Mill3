@@ -53,7 +53,7 @@ case class InputHandlerPattern(input: Try[Any]) :
     case Success(_) => copy(Failure(new InputException("Unknown data type")))
     case Failure(exception) => copy(Failure(exception))
   
-  def validatePossibleNeighbourStones(board: Board): InputHandlerPattern = input match {
+  def validatePossibleNeighbourStones(board: Board): InputHandlerPattern = input match 
     case Success(value: (Int, Int)) =>
       // In specific corner
       val neighbourList = List((value._1, if value._2 - 1 < 0 then 7 else value._2 - 1), (value._1, if value._2 + 1 > 7 then 0 else value._2 + 1))
@@ -79,7 +79,7 @@ case class InputHandlerPattern(input: Try[Any]) :
         end if
     case Success(_) => copy(Failure(new InputException("Unknown data type")))
     case Failure(exception) => copy(Failure(exception))
-  }
+  
   def validateNeighboursWithInput(neighbours: List[(Int, Int)]): InputHandlerPattern = input match
     case Success(value: (Int, Int)) =>
       val result = neighbours.filter((i: (Int, Int)) => (i._1 == value._1) && (i._2 == value._2))
