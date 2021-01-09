@@ -8,5 +8,9 @@ lazy val root = project
 
     scalaVersion := scala3Version,
 
-    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
+    //resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases",
+    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
+    libraryDependencies += ("org.scalactic" %% "scalactic" % "3.2.2").withDottyCompat(scalaVersion.value),
+    libraryDependencies += ("org.scalatest" %% "scalatest" % "3.2.2" % "test").withDottyCompat(scalaVersion.value)
+
   )
