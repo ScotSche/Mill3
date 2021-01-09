@@ -56,6 +56,7 @@ class Tui(controller: Controller) extends Observer{
               inputResult match {
                 case Success(value: (Int, Int)) =>
                   controller.setStone(value._1, value._2, currentPlayer.color)
+                case Success(_) => 
                 case Failure(exception) => println(exception)
               }
             else 
@@ -83,7 +84,7 @@ class Tui(controller: Controller) extends Observer{
             else 
               handleMillInputString(input)
             end if
-          case GameStatus.END =>
+          case _ =>
   }
   def handleNormalSelectStone(input: String) = {
     val inputResult =
@@ -103,6 +104,7 @@ class Tui(controller: Controller) extends Observer{
         stoneNeighbours = neighbours
         gpTwoSeparator = !gpTwoSeparator
         println(mainGamePhaseTurns())
+      case Success(_) =>
       case Failure(exception) => println(exception)
   }
   def handlePlaceStone(input: String) = {
@@ -123,6 +125,7 @@ class Tui(controller: Controller) extends Observer{
         controller.moveStone(list(0), list(1), currentPlayer.color)
         gpTwoList = new ListBuffer[(Int, Int)]
         gpTwoSeparator = !gpTwoSeparator
+      case Success(_) =>
       case Failure(exception) => println(exception)
   }
 
@@ -136,6 +139,7 @@ class Tui(controller: Controller) extends Observer{
           val optionPlayer = controller.players.find(_ != currentPlayer)
           optionPlayer match
             case Some(player: Player) => player.color
+            case None => 0
         })
         .input
       ).get
@@ -144,6 +148,7 @@ class Tui(controller: Controller) extends Observer{
       case Success(value: (Int, Int)) =>
         newMill = !newMill
         controller.remove_stone(value._1, value._2, currentPlayer.color)
+      case Success(_) =>
       case Failure(exception) => println(exception)
   }
 
@@ -266,15 +271,12 @@ class Tui(controller: Controller) extends Observer{
 
   def endGameScreen(player: Player): String = {
     controller.gameStatus = GameStatus.END
-    val endString = {
-       "                         ***************************************\n" +
-      s"                            Congratulations ${player.name}!\n" +
-       "                            you won the game\n" +
-       "                            Press q to quit or n for new Game\n" +
-       "                         ***************************************"
-    }
-
-    endString
+    s"""
+    :                         ***************************************
+    :                            Congratulations ${player.name}!
+    :                            you won the game
+    :                            Press q to quit or n for new Game
+    :                         *************************************** """.stripMargin(':')
   }
 
   def goodbyeScreen(): String = """
@@ -348,7 +350,7 @@ class Tui(controller: Controller) extends Observer{
               println(endGameScreen(controller.players(0)))
             end if
           end if
-        case GameStatus.END =>
+        case _ =>
     end if
   }
 }
