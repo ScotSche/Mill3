@@ -1,6 +1,6 @@
 package Model
 
-case class Board(stones: BoardMatrix[Stone]) {
+case class Board(stones: BoardMatrix[Stone]) :
 
   def this() = this(new BoardMatrix[Stone](Stone(0)))
 
@@ -88,4 +88,3 @@ case class Board(stones: BoardMatrix[Stone]) {
     println(validNeighboursOnBoard)
     if (!validNeighboursOnBoard.isEmpty) true else false
   }
-}

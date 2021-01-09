@@ -2,7 +2,7 @@ package Model
 
 import scala.util.{Failure, Success, Try}
 
-case class InputHandlerPattern(input: Try[Any]) {
+case class InputHandlerPattern(input: Try[Any]) :
   def validateInputLength: InputHandlerPattern = input match {
     case Success(value: String) => if(value.length == 2) copy(Success(value)) else copy(Failure(new InputException("Invalid amount of characters")))
     case Failure(exception) => copy(Failure(exception))
@@ -66,4 +66,3 @@ case class InputHandlerPattern(input: Try[Any]) {
   }
 
   class InputException(msg: String) extends Exception(msg){}
-}

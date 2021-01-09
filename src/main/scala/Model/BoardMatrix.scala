@@ -1,6 +1,6 @@
 package Model
 
-case class BoardMatrix[T](vectors: Vector[Vector[T]]) {
+case class BoardMatrix[T](vectors: Vector[Vector[T]]) :
   def this(filling: T) = this(Vector.tabulate(3, 8) {(rectangle_num, position_num) => filling})
 
   def stone(rect_num: Int, pos_num: Int): T = vectors(rect_num)(pos_num)
@@ -14,4 +14,3 @@ case class BoardMatrix[T](vectors: Vector[Vector[T]]) {
     val filteredFlatVector = flatVector.filter(i => i == Stone(color))
     filteredFlatVector.length
   }
-}

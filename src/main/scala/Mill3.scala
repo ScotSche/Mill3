@@ -30,7 +30,6 @@ object Mill3 {
         } // || Spielende
       }
     }
-
     println(tui.goodbyeScreen())
   }
   def playerInputIteration(): Unit ={
