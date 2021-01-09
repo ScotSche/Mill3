@@ -5,7 +5,7 @@ import scala.io.StdIn.readLine
 
 // Trigger Travis CI
 
-object Mill {
+object Mill3 {
 
   //val color = ("black", "white")
 
