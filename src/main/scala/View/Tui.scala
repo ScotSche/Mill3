@@ -16,23 +16,21 @@ class Tui(controller: Controller) extends Observer{
   var newMill = false
 
   def processInputLine(input: String): Unit = {
-    input match {
+    input match 
       case "q" =>
       case "h" => println(helpBoard())
       case "n" =>
       case _ => println("No valid input. Please try again!")
-    }
   }
 
   def changePlayer(players: Vector[Player]): Player ={
-    currentPlayer.color match {
+    currentPlayer.color match
       case 1 => players(1)
       case 2 => players(0)
-    }
   }
 
   def processGameInputLine(input: String): Unit = {
-    input match {
+    input match
       case "q" =>
       case "h" => println(helpBoard())
       case "n" => {
@@ -43,7 +41,7 @@ class Tui(controller: Controller) extends Observer{
         controller.create_empty_Board()
       }
       case _ =>
-        controller.gameStatus match {
+        controller.gameStatus match
           case GameStatus.GPONE =>
             if !newMill then
               val inputResult =
@@ -86,8 +84,6 @@ class Tui(controller: Controller) extends Observer{
               handleMillInputString(input)
             end if
           case GameStatus.END =>
-        }
-    }
   }
   def handleNormalSelectStone(input: String) = {
     val inputResult =
@@ -100,7 +96,7 @@ class Tui(controller: Controller) extends Observer{
         .input
       ).get
 
-    inputResult match {
+    inputResult match
       case Success(value: List[(Int, Int)]) =>
         val mainStone :: neighbours = value
         gpTwoList += Tuple2(mainStone._1, mainStone._2)
@@ -108,7 +104,6 @@ class Tui(controller: Controller) extends Observer{
         gpTwoSeparator = !gpTwoSeparator
         println(mainGamePhaseTurns())
       case Failure(exception) => println(exception)
-    }
   }
   def handlePlaceStone(input: String) = {
     val inputResult =
@@ -121,7 +116,7 @@ class Tui(controller: Controller) extends Observer{
         .input
       ).get
 
-    inputResult match {
+    inputResult match
       case Success(value: (Int, Int)) =>
         gpTwoList += Tuple2(value._1, value._2)
         val list = gpTwoList.toList
@@ -129,7 +124,6 @@ class Tui(controller: Controller) extends Observer{
         gpTwoList = new ListBuffer[(Int, Int)]
         gpTwoSeparator = !gpTwoSeparator
       case Failure(exception) => println(exception)
-    }
   }
 
   def handleMillInputString(input: String) = {
@@ -140,19 +134,17 @@ class Tui(controller: Controller) extends Observer{
         .validateCoordinatesOnBoard
         .validateOwnPlayerStone(controller.board, {
           val optionPlayer = controller.players.find(_ != currentPlayer)
-          optionPlayer match {
+          optionPlayer match
             case Some(player: Player) => player.color
-          }
         })
         .input
       ).get
 
-    inputResult match {
+    inputResult match
       case Success(value: (Int, Int)) =>
         newMill = !newMill
         controller.remove_stone(value._1, value._2, currentPlayer.color)
       case Failure(exception) => println(exception)
-    }
   }
 
   def welcomeScreen(): String = """
@@ -192,11 +184,12 @@ class Tui(controller: Controller) extends Observer{
     gpThreeString
   }
   def getGamePhaseMessage(): String = {
-      controller.gameStatus match {
-          case GameStatus.GPONE => "Let the game begin.\nGame Phase One: Please place your stones on a free field."
-          case GameStatus.GPTWO => "Game Phase Two: Move your Stones strategically and get the victory."
-          case GameStatus.GPTHREE => "Game Phase Three: Be aware! One Player is able to jump."
-      }
+      controller.gameStatus match
+        case GameStatus.IDLE => ""
+        case GameStatus.GPONE => "Let the game begin.\nGame Phase One: Please place your stones on a free field."
+        case GameStatus.GPTWO => "Game Phase Two: Move your Stones strategically and get the victory."
+        case GameStatus.GPTHREE => "Game Phase Three: Be aware! One Player is able to jump."
+        case GameStatus.END => ""
   }
 
   def playerGamePhaseOneTurns(): String ={
@@ -219,11 +212,10 @@ class Tui(controller: Controller) extends Observer{
   }
 
   def color_matcher(in:Stone):String = {
-    in.color match {
+    in.color match
       case 0 => "O"
       case 1 => "W"
       case 2 => "B"
-    }
   }
 
   def updateBoard(board: Board): String={
@@ -314,7 +306,7 @@ class Tui(controller: Controller) extends Observer{
   override def updatePlayer: Unit = {
     if !newMill then
       currentPlayer = changePlayer(controller.players)
-      controller.gameStatus match {
+      controller.gameStatus match
         case GameStatus.GPONE =>
           if controller.amountOfPlayerStones(1) == controller.players(0).MAX_STONE &&
             controller.amountOfPlayerStones(2) == controller.players(1).MAX_STONE then
@@ -357,7 +349,6 @@ class Tui(controller: Controller) extends Observer{
             end if
           end if
         case GameStatus.END =>
-      }
     end if
   }
 }
