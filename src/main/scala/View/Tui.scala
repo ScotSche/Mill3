@@ -53,12 +53,11 @@ class Tui(controller: Controller) extends Observer{
                   .input
                 ).get
 
-              inputResult match {
+              inputResult match
                 case Success(value: (Int, Int)) =>
                   controller.setStone(value._1, value._2, currentPlayer.color)
                 case Success(_) => 
                 case Failure(exception) => println(exception)
-              }
             else 
               handleMillInputString(input) 
             end if
@@ -270,7 +269,7 @@ class Tui(controller: Controller) extends Observer{
     :               O----------------------------O----------------------------O """.stripMargin(':')
 
   def endGameScreen(player: Player): String = {
-    controller.gameStatus = GameStatus.END
+    //controller.gameStatus = GameStatus.END
     s"""
     :                         ***************************************
     :                            Congratulations ${player.name}!
@@ -326,9 +325,11 @@ class Tui(controller: Controller) extends Observer{
 
         case GameStatus.GPTWO =>
           val optionPlayer = controller.players.filter(i => i != currentPlayer)(0)
-          if controller.checkBoardForNeighbours(optionPlayer.color) then
+          if !controller.checkBoardForNeighbours(optionPlayer.color) then
             controller.gameStatus = GameStatus.END
             println(endGameScreen(currentPlayer))
+            //hier passiert der Fehler...
+            //println(mainGamePhaseTurns())
           else
             if controller.players(0).MAX_STONE == 3 || controller.players(1).MAX_STONE == 3 then
               println(gamePhaseThreeBegin())
