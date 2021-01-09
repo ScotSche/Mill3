@@ -45,7 +45,7 @@ class Tui(controller: Controller) extends Observer{
       case _ =>
         controller.gameStatus match {
           case GameStatus.GPONE =>
-            if (!newMill) {
+            if !newMill then
               val inputResult =
                 Try(InputHandlerPattern(Success(input))
                   .validateInputLength
@@ -60,30 +60,31 @@ class Tui(controller: Controller) extends Observer{
                   controller.setStone(value._1, value._2, currentPlayer.color)
                 case Failure(exception) => println(exception)
               }
-            }
-            else{ handleMillInputString(input) }
+            else 
+              handleMillInputString(input) 
+            end if
 
           case GameStatus.GPTWO =>
-            if (!newMill) {
-              if (!gpTwoSeparator) {
-                handleNormalSelectStone(input)
-              }
-              else {
+            if !newMill then
+              if !gpTwoSeparator then
+                handleNormalSelectStone(input)              
+              else 
                 handlePlaceStone(input)
-              }
-            }
-            else{ handleMillInputString(input) }
+              end if
+            else
+              handleMillInputString(input)
+            end if
 
           case GameStatus.GPTHREE =>
-            if (!newMill) {
-              if (!gpTwoSeparator) {
+            if !newMill then
+              if !gpTwoSeparator then
                 handleNormalSelectStone(input)
-              }
-              else {
+              else
                 handlePlaceStone(input)
-              }
-            }
-            else{ handleMillInputString(input) }
+              end if
+            else 
+              handleMillInputString(input)
+            end if
           case GameStatus.END =>
         }
     }
@@ -204,10 +205,11 @@ class Tui(controller: Controller) extends Observer{
     playerTurnString
   }
   def mainGamePhaseTurns(): String ={
-    if( !gpTwoSeparator)
+    if !gpTwoSeparator then
       s"${currentPlayer.name} choose the stone you want to move:"
     else
       s"${currentPlayer.name} where do you want to place it:"
+    end if
   }
 
   def currentGameScore(): String ={
@@ -296,64 +298,66 @@ class Tui(controller: Controller) extends Observer{
     :********************************************************************************************** """.stripMargin(':')
 
   override def update: Unit = {
-    if(controller.gameStatus == GameStatus.GPTWO) println(currentGameScore())
+    if controller.gameStatus == GameStatus.GPTWO then 
+      println(currentGameScore())
+    end if
     println(updateBoard(controller.board))
-    if (currentPlayer.color == 0) currentPlayer = controller.players(1)
-    if (controller.newMill) {
+    if currentPlayer.color == 0 then 
+      currentPlayer = controller.players(1)
+    end if
+    if controller.newMill then
       println(s"New Mill on Board\n${currentPlayer.name} what stone do you want to remove?")
       newMill = !newMill
-    }
-
+    end if
   }
 
   override def updatePlayer: Unit = {
-    if ( !newMill) {
+    if !newMill then
       currentPlayer = changePlayer(controller.players)
       controller.gameStatus match {
         case GameStatus.GPONE =>
-          if (controller.amountOfPlayerStones(1) == controller.players(0).MAX_STONE &&
-            controller.amountOfPlayerStones(2) == controller.players(1).MAX_STONE) {
+          if controller.amountOfPlayerStones(1) == controller.players(0).MAX_STONE &&
+            controller.amountOfPlayerStones(2) == controller.players(1).MAX_STONE then
             val competitorPlayer = controller.players.filter(i => i != currentPlayer)(0)
-            if (!controller.checkBoardForNeighbours(currentPlayer.color)) {
+            if !controller.checkBoardForNeighbours(currentPlayer.color) then
               controller.gameStatus = GameStatus.END
               println(endGameScreen(competitorPlayer))
-            }
-            else {
+            else
               println(gamePhaseTwoBegin())
               println(mainGamePhaseTurns())
-            }
-          }
-          else println(playerGamePhaseOneTurns())
+            end if
+          else 
+            println(playerGamePhaseOneTurns())
+          end if
 
         case GameStatus.GPTWO =>
           val optionPlayer = controller.players.filter(i => i != currentPlayer)(0)
-          if (controller.checkBoardForNeighbours(optionPlayer.color)) {
+          if controller.checkBoardForNeighbours(optionPlayer.color) then
             controller.gameStatus = GameStatus.END
             println(endGameScreen(currentPlayer))
-          }
-          else {
-            if (controller.players(0).MAX_STONE == 3 || controller.players(1).MAX_STONE == 3) {
+          else
+            if controller.players(0).MAX_STONE == 3 || controller.players(1).MAX_STONE == 3 then
               println(gamePhaseThreeBegin())
               println(mainGamePhaseTurns())
-            } else println(mainGamePhaseTurns())
-          }
+            else 
+              println(mainGamePhaseTurns())
+            end if
+          end if
 
         case GameStatus.GPTHREE =>
           val optionPlayer = controller.players.filter(i => i != currentPlayer)(0)
-          if (controller.checkBoardForNeighbours(optionPlayer.color)) {
+          if controller.checkBoardForNeighbours(optionPlayer.color) then
             controller.gameStatus = GameStatus.END
             println(endGameScreen(currentPlayer))
-          }
-          else {
-            if (controller.players(0).MAX_STONE == 2) {
+          else
+            if controller.players(0).MAX_STONE == 2 then
               println(endGameScreen(controller.players(1)))
-            }
-            else if (controller.players(1).MAX_STONE == 2) {
+            else if controller.players(1).MAX_STONE == 2 then
               println(endGameScreen(controller.players(0)))
-            }
-          }
+            end if
+          end if
         case GameStatus.END =>
       }
-    }
+    end if
   }
 }

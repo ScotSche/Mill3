@@ -20,7 +20,7 @@ object Mill3 {
     while !input.equalsIgnoreCase("q") do {
       input = readLine()
       tui.processInputLine(input)
-      if(input == "n"){
+      if input == "n" then
         playerInputIteration()
         println(tui.gamePhaseOneBegin())
         controller.create_empty_Board()
@@ -28,7 +28,7 @@ object Mill3 {
           input = readLine()
           tui.processGameInputLine(input)
         } // || Spielende
-      }
+      end if
     }
     println(tui.goodbyeScreen())
   }
