@@ -58,11 +58,10 @@ class Controller(var board: Board, var players: Vector[Player]) extends Observab
   }
 
   def getCompetitorStone(color: Int): Int ={
-    color match {
+    color match
       case 1 => 2
       case 2 => 1
       case _ => 0
-    }
   }
 
   def remove_stone(rect_num: Int, pos_num: Int, color: Int): Unit = {
