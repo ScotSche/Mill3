@@ -19,8 +19,11 @@ case class Board(stones: BoardMatrix[Stone]) :
   }
 
   def setup_relevant_Stones(in: Stone, color: Int): String = {
-    if(in.color == color) {"1"}
-    else {"0"}
+    if in.color == color then 
+      {"1"}
+    else 
+      {"0"}
+    end if
   }
 
   def vecToString(vec: Vector[String]): String = vec.mkString
@@ -54,9 +57,9 @@ case class Board(stones: BoardMatrix[Stone]) :
     val oldMills = millControlVector.filter(i => (i & oldBoardIntFlatVector) == i)
     val newMills = millControlVector.filter(i => (i & relevantIntFlatVector) == i)
 
-    val newMillCheck = newMills.map(n => if (oldMills.contains(n)) false else true)
+    val newMillCheck = newMills.map(n => if oldMills.contains(n) then false else true)
 
-    if (newMillCheck.contains(true)) true else false
+    if newMillCheck.contains(true) then true else false
   }
   def check_Board_For_Neighbours(color: Int): Boolean = {
     val stoneCoordinates = for{
@@ -70,14 +73,13 @@ case class Board(stones: BoardMatrix[Stone]) :
     val stoneNeighbours = for{
       i <- stoneCoordinates
     } yield {
-      val neighbourList = Vector((i._1, if (i._2 - 1 < 0) 7 else i._2 - 1), (i._1, if (i._2 + 1 > 7) 0 else i._2 + 1))
+      val neighbourList = Vector((i._1, if i._2 - 1 < 0 then 7 else i._2 - 1), (i._1, if i._2 + 1 > 7 then 0 else i._2 + 1))
       var additionalNeighbourList: Vector[(Int, Int)] = Vector()
       if (i._2 % 2 != 0) {
-        additionalNeighbourList = i._1 match {
+        additionalNeighbourList = i._1 match
           case 0 => Vector((i._1 + 1, i._2))
           case 1 => Vector((i._1 + 1, i._2), (i._1 - 1, i._2))
           case 2 => Vector((i._1 - 1, i._2))
-        }
       }
       val finalNeighbours = neighbourList ++: additionalNeighbourList
       finalNeighbours
@@ -86,5 +88,5 @@ case class Board(stones: BoardMatrix[Stone]) :
     println(stoneCoordinates)
     println(stoneNeighbours)
     println(validNeighboursOnBoard)
-    if (!validNeighboursOnBoard.isEmpty) true else false
+    if !validNeighboursOnBoard.isEmpty then true else false
   }
