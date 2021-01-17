@@ -9,11 +9,11 @@ import scala.util.{Failure, Success, Try}
 
 class Tui(controller: Controller) extends Observer{
   controller.add(this)
-  var currentPlayer = Player("", 0, 0)
-  var gpTwoSeparator = false
-  var gpTwoList = new ListBuffer[(Int, Int)]()
+  var currentPlayer: Player = Player("", 0, 0)
+  var gpTwoSeparator: Boolean = false
+  var gpTwoList: ListBuffer[(Int, Int)] = new ListBuffer[(Int, Int)]()
   var stoneNeighbours: List[(Int, Int)] = List()
-  var newMill = false
+  var newMill: Boolean = false
 
   def processInputLine(input: String): Unit = {
     input match 
@@ -85,7 +85,7 @@ class Tui(controller: Controller) extends Observer{
             end if
           case _ =>
   }
-  def handleNormalSelectStone(input: String) = {
+  def handleNormalSelectStone(input: String): Unit = {
     val inputResult =
       Try(InputHandlerPattern(Success(input))
         .validateInputLength
@@ -106,7 +106,7 @@ class Tui(controller: Controller) extends Observer{
       case Success(_) =>
       case Failure(exception) => println(exception)
   }
-  def handlePlaceStone(input: String) = {
+  def handlePlaceStone(input: String): Unit = {
     val inputResult =
       Try(InputHandlerPattern(Success(input))
         .validateInputLength
@@ -128,7 +128,7 @@ class Tui(controller: Controller) extends Observer{
       case Failure(exception) => println(exception)
   }
 
-  def handleMillInputString(input: String) = {
+  def handleMillInputString(input: String): Unit = {
     val inputResult =
       Try(InputHandlerPattern(Success(input))
         .validateInputLength

@@ -3,14 +3,10 @@ import Model.Board
 import View.Tui
 import scala.io.StdIn.readLine
 
-// Trigger Travis CI
-
 object Mill3 {
 
-  //val color = ("black", "white")
-
-  val controller = new Controller(new Board, Vector())
-  val tui = new Tui(controller)
+  val controller: Controller = new Controller(new Board, Vector())
+  val tui: Tui = new Tui(controller)
 
   @main def mill() = {
 

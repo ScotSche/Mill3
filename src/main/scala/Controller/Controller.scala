@@ -5,7 +5,7 @@ import Util.Observable
 import GameStatus._
 
 class Controller(var board: Board, var players: Vector[Player]) extends Observable:
-  var newMill = false
+  var newMill: Boolean = false
   var gameStatus: GameStatus = IDLE
 
   def create_empty_Board(): Unit = 
